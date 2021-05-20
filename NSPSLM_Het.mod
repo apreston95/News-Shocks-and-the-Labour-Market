@@ -137,6 +137,14 @@ B = 1*(
         + Psi_E_@{k}*B_E_@{k}
           @#endfor
                   );
+		  
+** Labour market clearing (potentially might need goods market clearing instead but maybe not because of Walras' law?)
+
+N = 1*(
+       @#for i in 0:KBAR 
+        + Psi_E_@{k}
+          @#endfor
+                  );
                   
 //****************************************************************************
 * NON-HETEROGENEITY BLOCK
