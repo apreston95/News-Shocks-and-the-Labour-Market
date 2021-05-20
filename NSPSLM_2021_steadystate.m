@@ -1,6 +1,6 @@
-function [ys,params,check] = AP_Model_GHH(ys,exo,M_,options_)
-% function [ys,params,check] = AP_Model_GHH(ys,exo,M_,options_)
-% computes the steady state for the AP_Model_GHH.mod and uses a numerical
+function [ys,params,check] = NSPSLM_2021(ys,exo,M_,options_)
+% function [ys,params,check] = NSPSLM_2021(ys,exo,M_,options_)
+% computes the steady state for the NSPSLM_2021.mod and uses a numerical
 % solver to do so
 % Inputs: 
 %   - ys        [vector] vector of initial values for the steady state of
