@@ -20,15 +20,7 @@ Parameters 	Gamma
 		W_Bar
 		R_Bar
 		Pi_Bar
-    Eta_Bar
-    b_Bar
-    Y_Bar
-    A_Bar
-    M_Bar
-    Eta_V_Bar
-    MC_Bar
-    U_Bar
-    V_Bar
+   		A_Bar
 		;
 
 //****************************************************************************
@@ -38,7 +30,6 @@ Parameters 	Gamma
 Gamma = 2;
 Beta = 0.99;
 Rho = 0.044;
-Kappa = 0.2;
 Sigma = 6;
 Theta = 58.7;
 Chi = 1.68;
