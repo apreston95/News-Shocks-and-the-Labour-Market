@@ -1,11 +1,16 @@
 */ News Shock Model W/ heterogeneity, written by Andy Preston in May 2021 */
 
 @#define KBAR = 75
-@#for k in 0:KBAR
 
-Var W R Pi Eta b Y A N M Eta_V MC U V T qb JC C_E_@{k} B_E_@{k} C_EU_@{k+1} Psi_E_@{k} C_UU  ;
+@#for k in 0:KBAR
+@#for j in 1:KBAR
+
+
+Var W R Pi Eta b Y A N M Eta_V MC U V T qb JC C_E_@{k} B_E_@{k} C_EU_@{j} Psi_E_@{k} C_UU  ;
 
 @#endfor
+@#endfor
+
 
 Varexo Eps_A EPS_A4;
 
@@ -21,7 +26,7 @@ Parameters 	Gamma
 		Lambda
 		Rho_A
    
-    B
+    		B
     
 		N_Bar
 		W_Bar
