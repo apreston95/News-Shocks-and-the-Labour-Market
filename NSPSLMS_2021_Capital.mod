@@ -15,17 +15,17 @@ Parameters 	Gamma
 		Alpha
 		Lambda
 		Rho_A
-    Delta0
-    Delta1
-    Delta2
-    Omega
-    Phi
+   		Delta0
+    		Delta1
+    		Delta2
+    		Omega
+    		Phi
 
 		N_Bar
 		W_Bar
 		R_Bar
 		Pi_Bar
-   	A_Bar
+   		A_Bar
 		;
 
 //****************************************************************************
