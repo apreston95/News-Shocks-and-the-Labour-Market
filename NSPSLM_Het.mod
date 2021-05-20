@@ -195,6 +195,13 @@ b = Lambda*W;
 log(A) = Rho_A*log(A(-1)) + Eps_A + Eps_A4(-4);
 
 end; 
+
+initval;
+
+
+end;
+
+
 shocks;
 var Eps_A; stderr 0.01;
 var Eps_A4; stderr 0.01;
