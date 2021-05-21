@@ -1,6 +1,6 @@
 */ News Shock Model W/O Capital, written by Andy Preston in May 2021 */
 
-Var W R Pi Eta b Y A N M Eta_V MC U V;
+Var W R Pi Eta b Y A N M Eta_V MC U V C logC logY logA Real Urisk;
 
 Varexo Eps_A EPS_A4;
 
@@ -86,6 +86,15 @@ b = Lambda*W;
 [name='TFP']
 log(A) = Rho_A*log(A(-1)) + Eps_A + Eps_A4(-4);
 
+
+logA = log(A);
+logY = logY;
+C = N*W + U*b;
+logC = logC;
+Real = R/(1+Pi(+1));
+Urisk = 1 - ((1-Rho*(1-Eta(+1)))*(1-Rho*(1-Eta(+2)))*(1-Rho*(1-Eta(+3)))*(1-Rho*(1-Eta(+4))));
+
+
 end; 
 
 
@@ -103,3 +112,88 @@ check;
 model_diagnostics;
 
 stoch_simul(order=1, nocorr, nomoments,irf=20);
+
+H = 20;
+
+IRF_TFP_NEWS4 = oo_.irfs.logA_EpsA4;
+IRF_OUTPUT_NEWS4 = oo_.irfs.logY_EpsA4;
+IRF_CONSUMPTION_NEWS4 = oo_.irfs.logC_EpsA4;
+IRF_UNEMPLOYMENT_NEWS4 = oo_.irfs.U_EpsA4;
+IRF_VACANCIES_NEWS4 = oo_.irfs.V_EpsA4;
+IRF_NOMINAL_NEWS4 = oo_.irfs.R_EpsA4;
+IRF_REAL_NEWS4 = oo_.irfs.Real_EpsA4;
+IRF_INFLATION_NEWS4 = oo_.irfs.Pi_EpsA4;
+IRF_UR_NEWS4 = oo_.irfs.Urisk_EpsA4;
+
+
+
+figure;
+
+
+subplot(2,4,1)
+plot(0:H,IRF_TFP_NEWS4(1:end)*100,'color',[0.03,0.29,0.17],'LineWidth',2);
+hold on
+line([0 H],[0 0],'color','black','LineStyle','-');
+ylabel('\% Deviation','interpreter','LaTeX');
+xlabel('Quarters','interpreter','LaTeX');
+title('TFP','interpreter','LaTeX');
+
+
+subplot(2,4,2)
+plot(0:H,IRF_OUTPUT_NEWS4(1:end)*100,'color',[0.03,0.29,0.17],'LineWidth',2);
+hold on
+line([0 H],[0 0],'color','black','LineStyle','-');
+ylabel('\% Deviation','interpreter','LaTeX');
+xlabel('Quarters','interpreter','LaTeX');
+title('Output','interpreter','LaTeX');
+
+subplot(2,4,3)
+plot(0:H,IRF_CONSUMPTION_NEWS4(1:end)*100,'color',[0.03,0.29,0.17],'LineWidth',2);
+hold on
+line([0 H],[0 0],'color','black','LineStyle','-');
+ylabel('\% Deviation','interpreter','LaTeX');
+xlabel('Quarters','interpreter','LaTeX');
+title('Consumption','interpreter','LaTeX');
+
+subplot(2,4,4)
+plot(0:H,IRF_UNEMPLOYMENT_NEWS4(1:end)*100,'color',[0.03,0.29,0.17],'LineWidth',2);
+hold on
+line([0 H],[0 0],'color','black','LineStyle','-');
+ylabel('\% Deviation','interpreter','LaTeX');
+xlabel('Quarters','interpreter','LaTeX');
+title('Unemployment','interpreter','LaTeX');
+
+subplot(2,4,5)
+plot(0:H,IRF_VACANCIES_NEWS4(1:end)*100,'color',[0.03,0.29,0.17],'LineWidth',2);
+hold on
+line([0 H],[0 0],'color','black','LineStyle','-');
+ylabel('\% Deviation','interpreter','LaTeX');
+xlabel('Quarters','interpreter','LaTeX');
+title('Vacancies','interpreter','LaTeX');
+
+subplot(2,4,7)
+plot(0:H,IRF_NOMINAL_NEWS4(1:end)*100,'color',[0.03,0.29,0.17],'LineWidth',2);
+hold on
+line([0 H],[0 0],'color','black','LineStyle','-');
+ylabel('Ppt Deviation','interpreter','LaTeX');
+xlabel('Quarters','interpreter','LaTeX');
+title('Nominal interest rate','interpreter','LaTeX');
+
+subplot(2,4,6)
+plot(0:H,IRF_UR_NEWS4(1:end)*100,'color',[0.03,0.29,0.17],'LineWidth',2);
+hold on
+line([0 H],[0 0],'color','black','LineStyle','-');
+ylabel('Deviation','interpreter','LaTeX');
+xlabel('Quarters','interpreter','LaTeX');
+title('Unemployment risk','interpreter','LaTeX');
+
+subplot(2,4,8)
+plot(0:H,IRF_INFLATION_NEWS4(1:end)*100,'color',[0.03,0.29,0.17],'LineWidth',2);
+hold on
+line([0 H],[0 0],'color','black','LineStyle','-');
+ylabel('Ppt Deviation','interpreter','LaTeX');
+xlabel('Quarters','interpreter','LaTeX');
+title('Inflation','interpreter','LaTeX');
+
+
+print('IRFs_Model','-dpng');
