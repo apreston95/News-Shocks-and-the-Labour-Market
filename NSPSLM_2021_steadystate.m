@@ -44,6 +44,13 @@ W = A*MC - Kappa/Eta_V + Beta*(1-Rho)*(Kappa/Eta_V);
 b = Lambda*W;
 EE = @(x) W^(-Gamma) - Beta*(x/(1+Pi))*((1-Rho*(1-Eta))*W^(-Gamma) + Rho*(1-Eta)*b^(-Gamma));
 R = fsolve(EE,1,options);
+C = N*W + U*b;
+logC = log(C);
+logA = log(A);
+logY = log(Y);
+Real = R/(1+Pi);
+Urisk = 1 - ((1-Rho*(1-Eta))*(1-Rho*(1-Eta))*(1-Rho*(1-Eta))*(1-Rho*(1-Eta)));
+
 
 R_Bar = R;
 W_Bar = W;
