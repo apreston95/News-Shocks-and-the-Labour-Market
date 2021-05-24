@@ -133,7 +133,7 @@ Psi_E_@{k} = 1 - U - 1*(
 
 Psi_EU_1 = M(-1)*(1-JC(-1));
 
-@#for k in 2:KBAR
+@#for k in 2:KBAR-1
 
 log(Psi_EU_@{k}) = log(M(-k)) +1*(
                 @#for i in -2:-k 
@@ -143,6 +143,8 @@ log(Psi_EU_@{k}) = log(M(-k)) +1*(
 		 + log(1-JC(-1));
 
 @#endfor
+
+Psi_EU_@{KBAR} = (1-JC)*Psi_E_@{KBAR}(-1);
 
 Psi_UU = U - 1*(
 		@#for i in 1:KBAR 
@@ -201,7 +203,7 @@ MC = (1/A)*(W + (Kappa/Eta_V) - Beta*(1-Rho)*(Kappa/Eta_V(+1)));
 1 - Sigma + Sigma*MC = Theta*(Pi+1)*Pi - Theta*Beta*((Pi(+1)+1)*Pi(+1)*(Y(+1)/Y));
 
 [name='Wage Setting']
-W/steady_state(W) = (N/N_Bar)^Chi;
+W/steady_state(W) = (N/steady_state(N))^Chi;
 
 [name='Job Finding Rate']
 Eta = M/U;
