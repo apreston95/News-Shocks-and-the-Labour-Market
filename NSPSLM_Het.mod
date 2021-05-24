@@ -6,7 +6,7 @@
 @#for j in 1:KBAR
 
 
-Var W R Pi Eta b Y A N M Eta_V MC U V T qb JC C_E_@{k} B_E_@{k} C_EU_@{j} Psi_E_@{k} C_UU  ;
+Var W R Pi Eta b Y A N M Eta_V MC U V T qb JC C_E_@{k} B_E_@{k} C_EU_@{j} Psi_E_@{k} Psi_EU_@{j} Psi_UU C_UU C ;
 
 @#endfor
 @#endfor
@@ -129,6 +129,24 @@ Psi_E_@{k} = 1 - U - 1*(
                   @#endfor
                   );
 @#endfor
+
+@#for k in 1:KBAR
+
+log(Psi_EU_@{k}) = log(Eta(-k)) + log(U(-k)) +1*(
+                @#for i in -2:-k 
+                 + log(JC(@{i})
+                 @#endfor
+                 )
+		 + log(1-JC(-1));
+
+@#endfor
+
+Psi_UU = U - 1*(
+		@#for i in 1:KBAR 
+                  + Psi_EU_@{k}
+                  @#endfor
+                  );
+
  
 ** Bond market clearing
 
@@ -138,13 +156,24 @@ B = 1*(
           @#endfor
                   );
 		  
-** Labour market clearing (potentially might need goods market clearing instead but maybe not because of Walras' law?)
+		  
+** Goods market clearing
 
-N = 1*(
-       @#for i in 0:KBAR 
-        + Psi_E_@{k}
-          @#endfor
-                  );
+C = 1*(
+	 @#for i in 0:KBAR 
+	+ Psi_E_@{k}*C_E_@{k}
+	@#endfor
+		)
+						  
+	+ 1*(
+		@#for i in 1:KBAR 
+		+ Psi_EU_@{k}*C_EU_@{k}
+		 @#endfor
+			 )
+						  
+		+ Psi_UU*C_UU;
+
+Y - (Theta/2)*(Pi)^2 - Kappa*V = C;
                   
 //****************************************************************************
 * NON-HETEROGENEITY BLOCK
@@ -153,7 +182,7 @@ N = 1*(
 JC = 1 - Rho*(1-Eta(+1));
 
 [name='Bond Price']
-qb = (R(-1)/Pi)^(-1) ;
+qb = (R(-1)/(1+Pi))^(-1) ;
 
 [name='Govt BC']
 B + U*b = qb*B + T;
@@ -210,6 +239,7 @@ steady;
 check;
 model_diagnostics;
 stoch_simul(order=1, nocorr, nomoments,irf=20);
+
 
 
 
