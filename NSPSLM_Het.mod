@@ -6,7 +6,7 @@
 @#for j in 1:KBAR
 
 
-Var W R Pi Eta b Y A N M Eta_V MC U V T qb JC C_E_@{k} B_E_@{k} C_EU_@{j} Psi_E_@{k} Psi_EU_@{j} Psi_UU C_UU C ;
+Var W R Pi Eta b Y A N M Eta_V MC U V T JC C_E_@{k} B_E_@{k} C_EU_@{j} Psi_E_@{k} Psi_EU_@{j} Psi_UU C_UU C ;
 
 @#endfor
 @#endfor
@@ -32,7 +32,7 @@ Parameters 	Gamma
 		W_Bar
 		R_Bar
 		Pi_Bar
-   	A_Bar
+   		A_Bar
 		;
 
 //****************************************************************************
@@ -49,8 +49,6 @@ Delta_Pi = 1.5;
 Alpha = 0.65;
 Lambda = 0.4;
 Rho_A = 0.99;
-
-Rho_B = 0.94;
 
 A_Bar = 1;
 N_Bar = 0.94;
@@ -181,11 +179,9 @@ Y - (Theta/2)*(Pi)^2 - Kappa*V = C;
 
 JC = 1 - Rho*(1-Eta(+1));
 
-[name='Bond Price']
-qb = (R(-1)/(1+Pi))^(-1) ;
 
 [name='Govt BC']
-B + U*b = qb*B + T;
+B + T - U*b = R(-1)/(1+Pi)*B
 
 [name='Prod. Function']
 Y = A*N;
@@ -200,7 +196,7 @@ MC = (1/A)*(W + (Kappa/Eta_V) - Beta*(1-Rho)*(Kappa/Eta_V(+1)));
 1 - Sigma + Sigma*MC = Theta*(Pi+1)*Pi - Theta*Beta*((Pi(+1)+1)*Pi(+1)*(Y(+1)/Y));
 
 [name='Wage Setting']
-W/W_Bar = (N/N_Bar)^Chi;
+W/steady_state(W) = (N/N_Bar)^Chi;
 
 [name='Job Finding Rate']
 Eta = M/U;
@@ -209,7 +205,7 @@ Eta = M/U;
 Eta_V = M/V;
 
 [name='Monetary Policy']
-R/R_Bar =((1+Pi)/(1+Pi_Bar))^(Delta_Pi);
+R/steady_state(R) =((1+Pi)/(1+Pi_Bar))^(Delta_Pi);
 
 [name='Matching Function']
 M = U^(Alpha)*V^(1-Alpha);
