@@ -109,8 +109,10 @@ C_E_@{k} + B_E_@{k} = W + R(-1)/(1+Pi)*B_E_@{k}(-1) - T;
 
 ** Population shares
 
-@#for k in 0:KBAR-1
- log(Psi_E_@{k}) = log(Eta(-k)) + log(U(-k)) +1*(
+Psi_E_0 = M;
+
+@#for k in 1:KBAR-1
+ log(Psi_E_@{k}) = log(M(-k)) +1*(
                 @#for i in -1:-k 
                  + log(JC(@{i})
                  @#endfor
@@ -128,9 +130,12 @@ Psi_E_@{k} = 1 - U - 1*(
                   );
 @#endfor
 
-@#for k in 1:KBAR
 
-log(Psi_EU_@{k}) = log(Eta(-k)) + log(U(-k)) +1*(
+Psi_EU_1 = M(-1)*(1-JC(-1));
+
+@#for k in 2:KBAR
+
+log(Psi_EU_@{k}) = log(M(-k)) +1*(
                 @#for i in -2:-k 
                  + log(JC(@{i})
                  @#endfor
