@@ -144,7 +144,7 @@ log(Psi_EU_@{k}) = log(M(-k)) +1*(
 
 @#endfor
 
-Psi_EU_@{KBAR} = (1-JC)*Psi_E_@{KBAR}(-1);
+Psi_EU_@{KBAR} = (1-JC(-1))*Psi_E_@{KBAR}(-1);
 
 Psi_UU = U - 1*(
 		@#for i in 1:KBAR 
