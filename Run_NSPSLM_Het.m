@@ -84,7 +84,9 @@ par.JC_Bar = JC_Bar;
 par.C_Bar = C_Bar;
 
 
+save params par;
 
+dynare NSPSLM_Het noclearall;
 
 
 
