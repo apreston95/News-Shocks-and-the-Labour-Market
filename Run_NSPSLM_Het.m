@@ -4,6 +4,9 @@ close all
 
 KBAR = 75;
 
+options = optimoptions('fsolve','Display','off','tolfun',1e-10,'tolx',1e-10);
+
+
 Gamma = 2;
 Beta = 0.99;
 Rho = 0.044;
@@ -14,6 +17,7 @@ Delta_Pi = 1.5;
 Alpha = 0.65;
 Lambda = 0.4;
 Rho_A = 0.99;
+Vacfrac = 0.01;
 
 
 A_Bar = 1;
@@ -41,7 +45,7 @@ for j = 0:KBAR-1
   Psi_EE_vec(j+1) = M_Bar*(JC_Bar)^(j);
 end
 
-Psi_EE_vec(KBAR) = 1-U_Bar - sum(Psi_EE_vec(1,1:KBAR-1))
+Psi_EE_vec(KBAR) = 1-U_Bar - sum(Psi_EE_vec(1,1:KBAR-1));
 
 Psi_EU_vec = zeros(1,KBAR);
   for j = 1:KBAR-1
