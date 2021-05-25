@@ -6,7 +6,7 @@
 @#for j in 1:KBAR
 
 
-Var W R Pi Eta b Y A N M Eta_V MC U V T JC C_E_@{k} B_E_@{k} C_EU_@{j} Psi_E_@{k} Psi_EU_@{j} Psi_UU C_UU C ;
+Var W R Pi Eta b Y A N M Eta_V MC U V T B JC C_E_@{k} B_E_@{k} C_EU_@{j} Psi_E_@{k} Psi_EU_@{j} Psi_UU C_UU C ;
 
 @#endfor
 @#endfor
@@ -75,6 +75,12 @@ C_E_@{k} + B_E_@{k} = W + R(-1)/(1+Pi)*B_E_@{k-1}(-1) - T;
 
 @#endfor
 
+@#for k in KBAR:KBAR
+
+C_E_@{k} + B_E_@{k} = W + R(-1)/(1+Pi)*B_E_@{k}(-1) - T;
+
+@#endfor
+
 ** Employed Euler 
 @#for k in 0:KBAR-1
 
@@ -82,8 +88,14 @@ C_E_@{k} + B_E_@{k} = W + R(-1)/(1+Pi)*B_E_@{k-1}(-1) - T;
 
 @#endfor
 
+@#for k in KBAR:KBAR
+
+(C_E_@{k})^(-Gamma) = Beta*(R/(1+Pi(+1))*((1-Rho*(1-Eta(+1)))*(C_E_@{k}(+1))^(-Gamma) + Rho*(1-Eta(+1))*(C_EU_@{k}(+1))^(-Gamma));
+
+@#endfor
+
 ** Newly unemployed BC
-@#for k in 1:KBAR-1
+@#for k in 1:KBAR
 
 C_EU_@{k} = (R(-1)/(1+Pi))*B_E_@{k-1}(-1) + b - T;
 
@@ -93,19 +105,8 @@ C_EU_@{k} = (R(-1)/(1+Pi))*B_E_@{k-1}(-1) + b - T;
 
 C_UU = b - T;
 
-** Final employed cohort BC
-@#for k in KBAR:KBAR
 
-C_E_@{k} + B_E_@{k} = W + R(-1)/(1+Pi)*B_E_@{k}(-1) - T;
 
-@#endfor
-
-** Final employed cohort Euler 
-@#for k in KBAR:KBAR
-
-(C_E_@{k})^(-Gamma) = Beta*(R/(1+Pi(+1))*((1-Rho*(1-Eta(+1)))*(C_E_@{k}(+1))^(-Gamma) + Rho*(1-Eta(+1))*(C_EU_@{k}(+1))^(-Gamma));
-
-@#endfor
 
 ** Population shares
 
@@ -228,8 +229,62 @@ log(A) = Rho_A*log(A(-1)) + Eps_A + Eps_A4(-4);
 
 end; 
 
+
 initval;
 
+W = W_Bar;
+Pi = Pi_Bar;
+Eta = Eta_Bar;
+b = b_Bar;
+Y = Y_Bar;
+A = A_Bar;
+N = N_Bar;
+M = M_Bar;
+Eta_V = Eta_V_Bar;
+MC = MC_Bar;
+U = U_Bar;
+V = V_Bar;
+B = B_Bar;
+JC = JC_Bar;
+C = C_Bar;
+
+@#for k in 0:KBAR-1
+Psi_E_{@k} = M*(JC)^(k);
+@#endfor
+
+Psi_E_{@KBAR} = 1 - U - 1*(
+		@#for i in 0:KBAR-1 
+		+ Psi_E_@{k}
+		 @#endfor
+		 );
+		 
+@#for k in 1:KBAR
+Psi_EU_{@k} = M*JC^(k-1)*(1-JC);
+@#endfor
+
+Psi_UU = U - 1*(
+		@#for i in 1:KBAR 
+		+ Psi_EU_@{k}
+		 @#endfor
+		 );
+		 
+		 
+R = 1;
+T = 0.3;
+
+C_UU = b - T;
+
+@#for k in 0:KBAR
+C_E_{@k} = Psi_E_{@k}*C;
+@#endfor
+
+@#for k in 1:KBAR
+C_EU_{@k} = Psi_EU_{@k}*C;
+@#endfor
+
+@#for k in 0:KBAR
+B_E_{@k} = Psi_E_{@k}*B;
+@#endfor
 
 end;
 
