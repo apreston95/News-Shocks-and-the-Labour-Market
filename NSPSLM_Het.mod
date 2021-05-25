@@ -250,7 +250,7 @@ log(A) = Rho_A*log(A(-1)) + Eps_A + Eps_A4(-4);
 end; 
 
 
-initval;
+initval(all_values_required);
 
 W = W_Bar;
 Pi = Pi_Bar;
