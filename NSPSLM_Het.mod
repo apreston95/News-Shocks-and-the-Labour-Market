@@ -1,14 +1,13 @@
-*/ News Shock Model W/ heterogeneity, written by Andy Preston in May 2021 */
+// News Shock Model W/ heterogeneity, written by Andy Preston in May 2021 //
+
+load params
 
 @#define KBAR = 75
 
-@#for k in 0:KBAR
-@#for j in 1:KBAR
+@#for k in 1:KBAR
 
+Var W R Pi Eta b Y A N M Eta_V MC U V T B JC C_E_0 C_E_@{k} B_E_0 B_E_@{k} C_EU_@{k} Psi_E_0 Psi_E_@{k} Psi_EU_@{k} Psi_UU C_UU C ;
 
-Var W R Pi Eta b Y A N M Eta_V MC U V T B JC C_E_@{k} B_E_@{k} C_EU_@{j} Psi_E_@{k} Psi_EU_@{j} Psi_UU C_UU C ;
-
-@#endfor
 @#endfor
 
 
@@ -25,34 +24,55 @@ Parameters 	Gamma
 		Alpha
 		Lambda
 		Rho_A
-   
-    		B
-    
-		N_Bar
+		
 		W_Bar
-		R_Bar
 		Pi_Bar
-   		A_Bar
+		Eta_Bar
+		b_Bar
+		Y_Bar
+		A_Bar
+		N_Bar
+		M_Bar
+		Eta_V_Bar
+		MC_Bar
+		U_Bar
+		V_Bar
+		B_Bar
+		JC_Bar
+		C_Bar
 		;
 
 //****************************************************************************
 //Set parameter values
 //****************************************************************************
 
-Gamma = 2;
-Beta = 0.99;
-Rho = 0.044;
-Sigma = 6;
-Theta = 58.7;
-Chi = 1.68;
-Delta_Pi = 1.5;
-Alpha = 0.65;
-Lambda = 0.4;
-Rho_A = 0.99;
+set_param_value('Gamma',par.Gamma);
+set_param_value('Beta',par.Beta);
+set_param_value('Rho',par.Rho);
+set_param_value('Kappa',par.Kappa);
+set_param_value('Sigma',par.Sigma);
+set_param_value('Theta',par.Theta);
+set_param_value('Chi',par.Chi);
+set_param_value('Delta_Pi',par.Delta_Pi);
+set_param_value('Alpha',par.Alpha);
+set_param_value('Lambda',par.Lambda);
+set_param_value('Rho_A',par.Rho_A);
 
-A_Bar = 1;
-N_Bar = 0.94;
-Pi_Bar = 0;
+set_param_value('W_Bar',par.W_Bar);
+set_param_value('Pi_Bar',par.Pi_Bar);
+set_param_value('Eta_Bar',par.Eta_Bar);
+set_param_value('b_Bar',par.b_Bar);
+set_param_value('Y_Bar',par.Y_Bar);
+set_param_value('A_Bar',par.A_Bar);
+set_param_value('N_Bar',par.N_Bar);
+set_param_value('M_Bar',par.M_Bar);
+set_param_value('Eta_V_Bar',par.Eta_V_Bar);
+set_param_value('MC_Bar',par.MC_Bar);
+set_param_value('U_Bar',par.U_Bar);
+set_param_value('V_Bar',par.V_Bar);
+set_param_value('B_Bar',par.B_Bar);
+set_param_value('JC_Bar',par.JC_Bar);
+set_param_value('C_Bar',par.C_Bar);
 
 //****************************************************************************
 //Model
@@ -62,10 +82,10 @@ model;
 
 
 //****************************************************************************
-* HETEROGENEITY BLOCK
+// HETEROGENEITY BLOCK
 //****************************************************************************
 
-** Employed BCs
+// Employed BCs
 C_E_0 + B_E_0 = W - T;
 
 @#define KBAR = 75
@@ -81,7 +101,7 @@ C_E_@{k} + B_E_@{k} = W + R(-1)/(1+Pi)*B_E_@{k}(-1) - T;
 
 @#endfor
 
-** Employed Euler 
+// Employed Euler 
 @#for k in 0:KBAR-1
 
 (C_E_@{k})^(-Gamma) = Beta*(R/(1+Pi(+1))*((1-Rho*(1-Eta(+1)))*(C_E_@{k+1}(+1))^(-Gamma) + Rho*(1-Eta(+1))*(C_EU_@{k+1}(+1))^(-Gamma));
@@ -94,21 +114,21 @@ C_E_@{k} + B_E_@{k} = W + R(-1)/(1+Pi)*B_E_@{k}(-1) - T;
 
 @#endfor
 
-** Newly unemployed BC
+// Newly unemployed BC
 @#for k in 1:KBAR
 
 C_EU_@{k} = (R(-1)/(1+Pi))*B_E_@{k-1}(-1) + b - T;
 
 @#endfor
 
-** Continuing unemployed BC
+// Continuing unemployed BC
 
 C_UU = b - T;
 
 
 
 
-** Population shares
+// Population shares
 
 Psi_E_0 = M;
 
@@ -154,7 +174,7 @@ Psi_UU = U - 1*(
                   );
 
  
-** Bond market clearing
+// Bond market clearing
 
 B = 1*(
        @#for i in 0:KBAR 
@@ -163,7 +183,7 @@ B = 1*(
                   );
 		  
 		  
-** Goods market clearing
+// Goods market clearing
 
 C = 1*(
 	 @#for i in 0:KBAR 
@@ -182,7 +202,7 @@ C = 1*(
 Y - (Theta/2)*(Pi)^2 - Kappa*V = C;
                   
 //****************************************************************************
-* NON-HETEROGENEITY BLOCK
+// NON-HETEROGENEITY BLOCK
 //****************************************************************************
 
 JC = 1 - Rho*(1-Eta(+1));
@@ -293,19 +313,12 @@ shocks;
 var Eps_A; stderr 0.01;
 var Eps_A4; stderr 0.01;
 end;
-steady;
+
 check;
+
+steady;
+
 model_diagnostics;
+
 stoch_simul(order=1, nocorr, nomoments,irf=20);
-
-
-
-
-
-
-
-
-
-
-
 
