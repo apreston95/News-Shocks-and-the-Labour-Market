@@ -15,7 +15,7 @@ Theta = 58.7;
 Chi = 1.68;
 Delta_Pi = 1.5;
 Alpha = 0.65;
-Lambda = 0.4;
+Lambda = 0.25;
 Rho_A = 0.99;
 Vacfrac = 0.01;
 
